@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abuhasan S — AI Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0A0F1E;
+      --navy2:   #111827;
+      --card:    #141C2E;
+      --card2:   #1A2340;
+      --cyan:    #00D4FF;
+      --cyan2:   #0099CC;
+      --amber:   #FFB347;
+      --green:   #39FF14;
+      --white:   #F0F4FF;
+      --muted:   #8892A4;
+      --border:  rgba(0, 212, 255, 0.15);
+      --glow:    0 0 20px rgba(0, 212, 255, 0.3);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--navy2); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan2); border-radius: 2px; }
+
+    /* ── Scan-line overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.04) 2px,
+        rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10, 15, 30, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+    }
+    .nav-logo span { color: var(--amber); }
+
+    .nav-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.05em;
+      color: var(--muted); text-decoration: none; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 600;
+      color: var(--navy); background: var(--cyan);
+      padding: 8px 20px; border-radius: 4px; text-decoration: none;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .nav-cta:hover { background: #33DDFF; box-shadow: var(--glow); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated grid background */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 70% 50%, black 30%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* Radial glow */
+    #hero::after {
+      content: '';
+      position: absolute; top: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,212,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 400;
+      color: var(--cyan); letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px; height: 1px; background: var(--cyan);
+    }
+
+    .hero-name {
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .hero-name .highlight { color: var(--cyan); }
+
+    .hero-title-line {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(14px, 1.8vw, 18px);
+      color: var(--muted);
+      margin-bottom: 28px;
+      min-height: 28px;
+    }
+    .cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: var(--cyan);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 0.8s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero-desc {
+      font-size: 15px; line-height: 1.7;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: flex; gap: 40px; margin-bottom: 40px;
+    }
+    .stat {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px; font-weight: 600;
+      color: var(--cyan);
+    }
+    .stat-label {
+      font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--muted);
+    }
+
+    .hero-btns {
+      display: flex; gap: 16px;
+    }
+    .btn-primary {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 600;
+      color: var(--navy); background: var(--cyan);
+      padding: 14px 32px; border-radius: 4px;
+      text-decoration: none; letter-spacing: 0.05em;
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { box-shadow: var(--glow); transform: translateY(-1px); }
+
+    .btn-secondary {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 600;
+      color: var(--cyan);
+      padding: 14px 32px; border-radius: 4px;
+      text-decoration: none; letter-spacing: 0.05em;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--cyan); background: rgba(0,212,255,0.06); }
+
+    /* Camera feed panel */
+    .hero-right {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .camera-panel {
+      width: 420px; height: 380px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      position: relative;
+      background: var(--card);
+      overflow: hidden;
+    }
+
+    .camera-panel::before {
+      content: 'LIVE FEED — AI SYSTEM ACTIVE';
+      position: absolute; top: 12px; left: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; color: var(--green);
+      letter-spacing: 0.15em;
+      z-index: 2;
+    }
+
+    .camera-panel::after {
+      content: '';
+      position: absolute; top: 12px; right: 16px;
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { opacity: 0.3; } }
+
+    .detection-grid {
+      position: absolute; inset: 36px 16px 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .det-cell {
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      background: var(--navy);
+    }
+
+    .det-cell .label {
+      position: absolute; bottom: 6px; left: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; color: var(--cyan);
+      background: rgba(0,0,0,0.7);
+      padding: 2px 6px; border-radius: 2px;
+    }
+
+    .det-box {
+      position: absolute;
+      border: 1.5px solid var(--cyan);
+      border-radius: 2px;
+      animation: scan 3s ease-in-out infinite;
+    }
+    @keyframes scan {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%        { opacity: 0.5; transform: scale(0.96); }
+    }
+
+    /* Person silhouette in cell 1 */
+    .cell-1 .det-box { top: 25%; left: 30%; width: 35%; height: 55%; }
+    .cell-2 .det-box { top: 20%; left: 25%; width: 50%; height: 60%; animation-delay: 0.7s; }
+    .cell-3 .det-box { top: 30%; left: 35%; width: 30%; height: 45%; animation-delay: 1.4s; }
+    .cell-4 .det-box { top: 15%; left: 20%; width: 60%; height: 70%; animation-delay: 2.1s; }
+
+    .confidence {
+      position: absolute; top: 6px; right: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; color: var(--amber);
+      background: rgba(0,0,0,0.7);
+      padding: 2px 6px; border-radius: 2px;
+    }
+
+    /* Corner marks */
+    .corner { position: absolute; width: 14px; height: 14px; }
+    .corner-tl { top: 36px; left: 16px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+    .corner-tr { top: 36px; right: 16px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+    .corner-bl { bottom: 16px; left: 16px; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+    .corner-br { bottom: 16px; right: 16px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 48px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; font-weight: 400;
+      color: var(--cyan); letter-spacing: 0.25em;
+      text-transform: uppercase; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; max-width: 80px;
+      height: 1px; background: var(--border);
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700; letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 60px;
+    }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--navy2); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .skill-card:hover { border-color: rgba(0,212,255,0.5); transform: translateY(-2px); }
+
+    .skill-card-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--cyan);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .skill-tag {
+      font-size: 12px; font-weight: 500;
+      color: var(--muted);
+      background: rgba(0,212,255,0.05);
+      border: 1px solid rgba(0,212,255,0.12);
+      padding: 5px 12px; border-radius: 20px;
+      letter-spacing: 0.02em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .skill-tag:hover { color: var(--cyan); border-color: rgba(0,212,255,0.4); }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--navy); }
+
+    .exp-header {
+      margin-bottom: 16px;
+    }
+    .exp-company {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--cyan);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .exp-role {
+      font-size: 15px; font-weight: 600; color: var(--muted); margin-bottom: 4px;
+    }
+    .exp-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: rgba(136,146,164,0.6);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .proj-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    }
+    .proj-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .proj-card:hover::before { opacity: 1; }
+    .proj-card:hover {
+      border-color: rgba(0,212,255,0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .proj-tags-top {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;
+    }
+    .proj-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600;
+      color: var(--cyan);
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.2);
+      padding: 3px 9px; border-radius: 3px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .proj-tag.amber {
+      color: var(--amber);
+      background: rgba(255,179,71,0.1);
+      border-color: rgba(255,179,71,0.2);
+    }
+
+    .proj-title {
+      font-size: 16px; font-weight: 600;
+      color: var(--white); margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .proj-desc {
+      font-size: 13px; line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ── ML PROJECTS ── */
+    #projects { background: var(--navy2); }
+
+    .ml-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .ml-card {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .ml-card:hover { border-color: rgba(255,179,71,0.4); transform: translateY(-2px); }
+
+    .ml-card-icon {
+      width: 40px; height: 40px;
+      background: rgba(255,179,71,0.1);
+      border: 1px solid rgba(255,179,71,0.2);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 16px;
+    }
+
+    .ml-title {
+      font-size: 15px; font-weight: 600;
+      color: var(--white); margin-bottom: 10px;
+    }
+
+    .ml-desc {
+      font-size: 13px; line-height: 1.65; color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .ml-skills {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .ml-skill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; color: var(--amber);
+      background: rgba(255,179,71,0.08);
+      border: 1px solid rgba(255,179,71,0.15);
+      padding: 3px 8px; border-radius: 3px;
+    }
+
+    /* ── ABOUT / EDUCATION ── */
+    #about { background: var(--navy); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .about-text {
+      font-size: 15px; line-height: 1.8;
+      color: var(--muted); margin-bottom: 28px;
+    }
+    .about-text strong { color: var(--white); }
+
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px;
+      margin-bottom: 20px;
+    }
+    .edu-inst {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--cyan);
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .edu-degree {
+      font-size: 16px; font-weight: 600;
+      color: var(--white); margin-bottom: 6px;
+    }
+    .edu-meta {
+      font-size: 13px; color: var(--muted);
+    }
+
+    .cert-row {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;
+    }
+    .cert-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--amber); 
+      background: rgba(255,179,71,0.08);
+      border: 1px solid rgba(255,179,71,0.25);
+      padding: 8px 16px; border-radius: 4px;
+      letter-spacing: 0.08em;
+    }
+
+    .achievement-card {
+      background: var(--card2);
+      border: 1px solid rgba(57,255,20,0.15);
+      border-left: 3px solid var(--green);
+      border-radius: 4px;
+      padding: 20px 24px;
+    }
+    .achievement-card p {
+      font-size: 14px; line-height: 1.65;
+      color: var(--muted);
+    }
+    .achievement-card p strong { color: var(--white); }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--navy2);
+      text-align: center;
+    }
+    .contact-inner { max-width: 600px; margin: 0 auto; }
+
+    .contact-subtitle {
+      font-size: 16px; line-height: 1.7;
+      color: var(--muted); margin-bottom: 40px;
+    }
+
+    .contact-links {
+      display: flex; gap: 16px; justify-content: center;
+      flex-wrap: wrap;
+    }
+    .contact-link {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; font-weight: 600;
+      color: var(--white);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 14px 24px; border-radius: 6px;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .contact-link:hover {
+      border-color: var(--cyan); color: var(--cyan);
+      background: rgba(0,212,255,0.05);
+    }
+    .contact-link .icon { font-size: 16px; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 28px 48px;
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+    .footer-mono span { color: var(--cyan); }
+
+    /* ── Fade-in animation ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 48px; }
+      .hero-right { display: none; }
+      section { padding: 72px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      footer { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .cursor { animation: none; opacity: 1; }
+      .det-box { animation: none; }
+      body::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">abu<span>hasan</span>.dev</div>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="mailto:abuhasanxs@gmail.com" class="nav-cta">Hire Me</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">AI Developer · Chennai, India</p>
+      <h1 class="hero-name">Abu<span class="highlight">hasan</span><br />S.</h1>
+      <p class="hero-title-line" id="typed-line"><span class="cursor"></span></p>
+      <p class="hero-desc">
+        Building real-time computer vision and multimodal AI systems — from edge devices to cloud-scale deployments. 
+        1 year of hands-on experience with YOLO, VLMs, RTSP pipelines, and GPU-accelerated inference.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">10+</span>
+          <span class="stat-label">CV Systems Built</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">1yr</span>
+          <span class="stat-label">AI Experience</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">Multi</span>
+          <span class="stat-label">Camera · Edge · Cloud</span>
+        </div>
+      </div>
+      <div class="hero-btns">
+        <a href="#experience" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-secondary">Get In Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="camera-panel">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="detection-grid">
+          <div class="det-cell cell-1">
+            <div class="det-box"></div>
+            <span class="label">CAM_01</span>
+            <span class="confidence">99.2%</span>
+          </div>
+          <div class="det-cell cell-2">
+            <div class="det-box"></div>
+            <span class="label">FACE_ID</span>
+            <span class="confidence">97.8%</span>
+          </div>
+          <div class="det-cell cell-3">
+            <div class="det-box"></div>
+            <span class="label">TRACK</span>
+            <span class="confidence">98.5%</span>
+          </div>
+          <div class="det-cell cell-4">
+            <div class="det-box"></div>
+            <span class="label">YOLO_v8</span>
+            <span class="confidence">96.1%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-inner">
+      <p class="section-label reveal">Technical Stack</p>
+      <h2 class="section-title reveal">What I Build With</h2>
+      <div class="skills-grid">
+        <div class="skill-card reveal">
+          <p class="skill-card-title">// Languages & Scripting</p>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Bash / Linux</span>
+            <span class="skill-tag">SQL</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <p class="skill-card-title">// Deep Learning & CV</p>
+          <div class="skill-tags">
+            <span class="skill-tag">PyTorch</span>
+            <span class="skill-tag">TensorFlow</span>
+            <span class="skill-tag">YOLO</span>
+            <span class="skill-tag">OpenCV</span>
+            <span class="skill-tag">Transformers</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <p class="skill-card-title">// Inference & Optimization</p>
+          <div class="skill-tags">
+            <span class="skill-tag">ONNX Runtime</span>
+            <span class="skill-tag">TensorRT</span>
+            <span class="skill-tag">OpenVINO</span>
+            <span class="skill-tag">CUDA</span>
+            <span class="skill-tag">Model Quantization</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <p class="skill-card-title">// Vision-Language Models</p>
+          <div class="skill-tags">
+            <span class="skill-tag">VLMs</span>
+            <span class="skill-tag">Multimodal AI</span>
+            <span class="skill-tag">Prompt Engineering</span>
+            <span class="skill-tag">Image QA</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <p class="skill-card-title">// APIs & Deployment</p>
+          <div class="skill-tags">
+            <span class="skill-tag">FastAPI</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">RTSP Streams</span>
+            <span class="skill-tag">Vector DBs</span>
+            <span class="skill-tag">FAISS</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <p class="skill-card-title">// Edge & Hardware</p>
+          <div class="skill-tags">
+            <span class="skill-tag">Jetson Nano</span>
+            <span class="skill-tag">Raspberry Pi</span>
+            <span class="skill-tag">GPU Acceleration</span>
+            <span class="skill-tag">Ubuntu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-inner">
+      <p class="section-label reveal">Professional Experience</p>
+      <h2 class="section-title reveal">Systems Built at SIEORA</h2>
+      <div class="exp-header reveal">
+        <p class="exp-company">SIEORA — AI Developer</p>
+        <p class="exp-role">Multi-Camera Vision Systems · Real-Time AI Pipelines</p>
+        <p class="exp-date">06/2025 – Present · Chennai, India</p>
+      </div>
+      <div class="projects-grid">
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">Face Recognition</span>
+            <span class="proj-tag">Re-ID</span>
+            <span class="proj-tag amber">Active</span>
+          </div>
+          <h3 class="proj-title">Multi-Camera Person Tracking & Re-Identification</h3>
+          <p class="proj-desc">Evaluated SOTA tracking algorithms for occlusion handling and cross-camera ID consistency. Developed a hybrid system combining motion-based tracking, appearance features, and facial embeddings for scalable real-time re-ID.</p>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">FastAPI</span>
+            <span class="proj-tag">RTSP</span>
+            <span class="proj-tag">Vector DB</span>
+          </div>
+          <h3 class="proj-title">Multi-Camera Face Recognition & Attendance System</h3>
+          <p class="proj-desc">Multi-threaded architecture processing live camera streams with consistent identity tracking. Async API with cooldown logic and multi-tenant data isolation for enterprise-scale deployments.</p>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">YOLO</span>
+            <span class="proj-tag">Object Detection</span>
+            <span class="proj-tag">Cloud Storage</span>
+          </div>
+          <h3 class="proj-title">Mobile Phone Usage Detection & Behavior Analytics</h3>
+          <p class="proj-desc">Global identity management for cross-camera tracking with cloud blob storage and local DB for fast retrieval. Session-based usage tracking with cooldown logic to eliminate duplicate detections.</p>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">VLM</span>
+            <span class="proj-tag">Quantization</span>
+            <span class="proj-tag">Rule Engine</span>
+          </div>
+          <h3 class="proj-title">Warehouse Safety Violation Detection</h3>
+          <p class="proj-desc">Prompt-based VLM checks for detecting safety violations (climbing, aggressive behavior) with a rule-based decision engine for smart overrides. Optimized via model quantization for CPU-based industrial deployment.</p>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">VLM</span>
+            <span class="proj-tag">Screenshot AI</span>
+            <span class="proj-tag">FastAPI</span>
+          </div>
+          <h3 class="proj-title">AI Activity Monitoring & Productivity Analysis</h3>
+          <p class="proj-desc">Processed screenshots via vision AI to classify productive vs. non-productive activity. Behavioral-change detection via screenshot comparison exposed as a FastAPI service with structured JSON for dashboard integration.</p>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">Face Alignment</span>
+            <span class="proj-tag">VLM</span>
+            <span class="proj-tag">Medical</span>
+          </div>
+          <h3 class="proj-title">SmartMed Drive-Thru — Face Validation System</h3>
+          <p class="proj-desc">Two-stage validation: geometric face alignment + AI-based quality/eyewear detection with strict rejection rules for blur and misalignment. FastAPI service with structured approval/rejection responses for healthcare integration.</p>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">Benchmarking</span>
+            <span class="proj-tag">Model Evaluation</span>
+          </div>
+          <h3 class="proj-title">Face Recognition Benchmarking Framework</h3>
+          <p class="proj-desc">Evaluated multiple face detection/recognition model combinations on a custom dataset using Accuracy, Precision, Recall, F1, ROC-AUC, FAR, and FRR. Generated visualizations and reports for data-driven deployment decisions.</p>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">OpenVINO</span>
+            <span class="proj-tag">Line Crossing</span>
+            <span class="proj-tag">Analytics</span>
+          </div>
+          <h3 class="proj-title">People Counting & Footfall Analytics System</h3>
+          <p class="proj-desc">Real-time people counter with configurable ROI line/polygon entry-exit detection and directional logic for all 4 directions IN/OUT classification. Optimized with frame skipping and GPU acceleration via OpenVINO.</p>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-tags-top">
+            <span class="proj-tag">Object Detection</span>
+            <span class="proj-tag">OpenCV</span>
+            <span class="proj-tag">Counting</span>
+          </div>
+          <h3 class="proj-title">Object Counting System — Sack Counting</h3>
+          <p class="proj-desc">Geometric line-crossing with unique ID tracking for accurate object counting plus object lifecycle management to handle stale detections in real-time video streams.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ML PROJECTS -->
+  <section id="projects">
+    <div class="section-inner">
+      <p class="section-label reveal">Independent Projects</p>
+      <h2 class="section-title reveal">Machine Learning Systems</h2>
+      <div class="ml-grid">
+        <div class="ml-card reveal">
+          <div class="ml-card-icon">🏦</div>
+          <h3 class="ml-title">Banking Predictive Analytics & Recommendation System</h3>
+          <p class="ml-desc">Predicted loan defaults, segmented customers, and recommended banking products using historical data. Helps banks reduce risk and boost product engagement.</p>
+          <div class="ml-skills">
+            <span class="ml-skill">Logistic Regression</span>
+            <span class="ml-skill">Random Forest</span>
+            <span class="ml-skill">Gradient Boosting</span>
+            <span class="ml-skill">SQL</span>
+            <span class="ml-skill">EDA</span>
+          </div>
+        </div>
+        <div class="ml-card reveal">
+          <div class="ml-card-icon">✈️</div>
+          <h3 class="ml-title">Tourism Experience Analytics & Recommendation</h3>
+          <p class="ml-desc">Predicted satisfaction, classified travel intent, and recommended attractions using user data. Helps tourism platforms personalize trips and forecast engagement.</p>
+          <div class="ml-skills">
+            <span class="ml-skill">XGBoost</span>
+            <span class="ml-skill">Random Forest</span>
+            <span class="ml-skill">Streamlit</span>
+            <span class="ml-skill">SQL</span>
+          </div>
+        </div>
+        <div class="ml-card reveal">
+          <div class="ml-card-icon">🌾</div>
+          <h3 class="ml-title">Crop Production Prediction System</h3>
+          <p class="ml-desc">Predicted crop yields from area harvested and yield rates. Helps agritech companies, governments, and farmers optimize crop planning and ensure food security.</p>
+          <div class="ml-skills">
+            <span class="ml-skill">Linear Regression</span>
+            <span class="ml-skill">Random Forest</span>
+            <span class="ml-skill">Streamlit</span>
+            <span class="ml-skill">Scikit-learn</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <p class="section-label reveal">Background</p>
+      <h2 class="section-title reveal">About Me</h2>
+      <div class="about-grid">
+        <div>
+          <p class="about-text reveal">
+            I'm an <strong>AI Developer</strong> based in Chennai, India, specializing in building computer vision and multimodal AI systems that solve real industrial problems — from multi-camera person tracking to VLM-powered safety monitoring.
+          </p>
+          <p class="about-text reveal">
+            My work spans the full stack of AI deployment: training and fine-tuning models with <strong>PyTorch</strong>, optimizing for edge with <strong>OpenVINO and TensorRT</strong>, building APIs with <strong>FastAPI</strong>, and deploying to constrained hardware like <strong>Jetson Nano</strong>.
+          </p>
+          <p class="about-text reveal">
+            Beyond production CV systems, I'm grounded in classical <strong>data science and machine learning</strong> — statistical modeling, EDA, and predictive analytics — with a passion for turning raw data into systems that create measurable impact.
+          </p>
+          <div class="achievement-card reveal" style="margin-top:28px;">
+            <p>🏆 <strong>Key Achievement:</strong> Conducted a <strong>3D Modeling Workshop</strong> at MEACON'23 Symposium, Velammal Engineering College (March 2023) — managing all aspects independently as the sole organizer.</p>
+          </div>
+        </div>
+        <div>
+          <div class="edu-card reveal">
+            <p class="edu-inst">Velammal Engineering College · Anna University</p>
+            <p class="edu-degree">B.E. Electronics & Instrumentation Engineering</p>
+            <p class="edu-meta">2020 – 2024 · Chennai, India · First Class</p>
+          </div>
+          <p class="section-label reveal" style="margin-top:32px; margin-bottom:12px;">Certifications</p>
+          <div class="cert-row reveal">
+            <span class="cert-badge">GUVI Certified Data Scientist</span>
+            <span class="cert-badge">IIT Madras Collaboration</span>
+            <span class="cert-badge">GUVI Certified Power BI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <p class="section-label reveal" style="justify-content:center;">Let's Connect</p>
+      <h2 class="section-title reveal">Open to Opportunities</h2>
+      <p class="contact-subtitle reveal">
+        Looking for AI Developer roles in computer vision, deep learning, and production AI systems. 
+        Based in Chennai — open to remote and hybrid work.
+      </p>
+      <div class="contact-links reveal">
+        <a href="mailto:abuhasanxs@gmail.com" class="contact-link">
+          <span class="icon">📧</span>abuhasanxs@gmail.com
+        </a>
+        <a href="https://linkedin.com/in/abuhasanxs" target="_blank" class="contact-link">
+          <span class="icon">💼</span>linkedin.com/in/abuhasanxs
+        </a>
+        <a href="https://github.com/Abuhasanx" target="_blank" class="contact-link">
+          <span class="icon">💻</span>github.com/Abuhasanx
+        </a>
+        <a href="tel:+919791029002" class="contact-link">
+          <span class="icon">📞</span>+91 9791029002
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-mono">© 2025 <span>Abuhasan S</span> — AI Developer</p>
+    <p class="footer-mono">Built with <span>precision</span> · Chennai, India</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // ── Typewriter hero ──
+    const phrases = [
+      'Computer Vision Engineer',
+      'Deep Learning Developer',
+      'VLM & Multimodal AI Engineer',
+      'Real-Time AI Systems Builder',
+    ];
+    let phraseIdx = 0, charIdx = 0, deleting = false;
+    const line = document.getElementById('typed-line');
+
+    function type() {
+      const current = phrases[phraseIdx];
+      const display = deleting
+        ? current.slice(0, charIdx--)
+        : current.slice(0, charIdx++);
+
+      line.innerHTML = display + '<span class="cursor"></span>';
+
+      if (!deleting && charIdx > current.length) {
+        setTimeout(() => { deleting = true; type(); }, 2000);
+        return;
+      }
+      if (deleting && charIdx < 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+      }
+      setTimeout(type, deleting ? 40 : 75);
+    }
+    type();
+
+    // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+
+    // ── Nav active highlight ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 80) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--cyan)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
